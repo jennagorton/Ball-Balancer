@@ -6,7 +6,9 @@
   <img src="https://github.com/user-attachments/assets/fe2f6cdb-b272-48fe-b524-41fdfa31bff9"
        alt="workingTest" width="420">
 </p>
+<p align="center">Figure 1: Stabilizing at center</p>
 
+ 
 -----
 
 About 

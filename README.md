@@ -2,9 +2,9 @@ Ball Balancing Robot
 ===
 Jenna Gorton, August 2025
 
-<p align="center">
+<div align="center">
   ![workingTest](https://github.com/user-attachments/assets/fe2f6cdb-b272-48fe-b524-41fdfa31bff9)
-</p>
+</div>
 
 
 About

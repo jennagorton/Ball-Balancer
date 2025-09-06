@@ -4,19 +4,19 @@
 
 // PID Constants
 #define kp_far_x 0.8
-#define ki_far_x 0.1 
+#define ki_far_x 0.15 
 #define kd_far_x 0.27
 
 #define kp_far_y 0.6
-#define ki_far_y 0.1
+#define ki_far_y 0.15
 #define kd_far_y 0.26
 
 #define kp_close_x .18
-#define ki_close_x 0.1
+#define ki_close_x 0.15
 #define kd_close_x 0.23
 
 #define kp_close_y .12
-#define ki_close_y 0.1
+#define ki_close_y 0.15
 #define kd_close_y 0.235
 
 #define max_output 83.5  // max X distance away from the center
@@ -30,9 +30,15 @@ double integral[2] = { 0, 0 };
 double derivative[2] = { 0, 0 };
 double output[2];
 double angles[2];
+long time_pattern = 0;
 
 //PID algorithm for x and y
 void balance(double target_x, double target_y) {
+
+  // Serial.print("X: ");
+  // Serial.print(target_x);
+  // Serial.print(", Y: ");
+  // Serial.println(target_y);
 
   static unsigned long t_prev = 0; //previous time
   static unsigned long last_time = 0; //when ball was last detected
@@ -111,4 +117,86 @@ void balance(double target_x, double target_y) {
     t_prev = t;
   }
 }
+
+/***************** LINE *******************/
+int direction = 0;                 // 0 = forward, 1 = backward
+unsigned long lastSwitch = 0;      
+
+void line(double rx, double ry, unsigned long interval) {
+  unsigned long now = millis();
+
+  // Only switch direction after the interval
+  if (now - lastSwitch >= interval) {
+    direction = !direction;   // flip 0 ↔ 1
+    lastSwitch = now;
+  }
+
+  // Apply current direction
+  if (direction == 0) {
+    balance(rx, ry);
+  } else {
+    balance(-rx, -ry);
+  }
+}
+
+/***************** TRIANGLE *******************/
+void triangle(int scale) {
+  unsigned long now = millis();
+
+  if (now - lastSwitch >= 900) {
+    direction = (direction + 1) % 3; 
+    lastSwitch = now;
+  }
+
+  // Apply current direction
+  if (direction == 0) {
+    balance(0, scale * 10);
+  } else if (direction == 1) {
+    balance(scale * -10, -20);
+  } else if (direction == 2) {
+    balance(scale * 10, -20);
+  }
+
+}
+
+/***************** FIGURE 8 *******************/
+double theta = 0;
+unsigned long lastStep = 0;
+
+void figure8(double r, int wait, int num) {
+  unsigned long now = millis();
+
+  if (now - lastStep < wait) return; //controls speed
+  lastStep = now;
+
+ 
+  double scale = r * (2 / (3 - cos(2 * theta)));
+  double x = scale * cos(theta);
+  double y = scale * sin(2 * theta) / 1.5;
+
+  
+  balance(x, y); //move
+
+  theta += 0.05;
+  if (theta >= 2 * PI) theta = 0;  // wrap around
+}
+
+/***************** ELLIPSE *********************/
+void ellipse(double rx, double ry, int interval) {
+  unsigned long now = millis();
+
+  if (now - lastStep >= interval) {
+    lastStep = now;
+
+    balance(rx * cos(theta), ry * sin(theta)); //moves one step
+    theta += 0.1;
+    if (theta >= 2 * PI) {
+      theta = 0; // wrap around
+    }
+  }
+}
+
+
+
+
 

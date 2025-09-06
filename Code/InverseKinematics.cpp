@@ -18,7 +18,7 @@ double safe_acos(double x) {
 ThetaAngles IK(double theta, double phi, double h) {
 
   //offset angles so that platform is flat on intitalization
-  theta += 4;
+  theta += 3;
   phi += -3;
 
   //convert to radians

@@ -10,7 +10,7 @@ Adafruit_PWMServoDriver pwm = Adafruit_PWMServoDriver(0x40);
 
 double step[3] = {0.0, 0.0, 0.0};  // array for step sizes
 double currentAngles[3];
-const double height = 85; // height of platform
+const double height = 90; // height of platform
 
 // initalizes serovs to make platform level
 void servo_init() {

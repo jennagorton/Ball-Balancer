@@ -9,6 +9,10 @@
 
 
 void balance(double target_x, double target_y);
+void ellipse(double rx, double ry, int interval);
+void line(double rx, double ry, unsigned long interval);
+void figure8(double r, int wait, int num);
+void triangle(int scale);
 
 
 

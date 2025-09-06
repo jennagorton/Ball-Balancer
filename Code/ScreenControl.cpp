@@ -61,21 +61,12 @@ calibrated_coords find_position() {
   pinMode(XM, OUTPUT);
   pinMode(YP, OUTPUT);
 
-  // if (raw_val.z <= 0) {
-  //   cali_p.x = last_x;
-  //   cali_p.y = last_y;
-  //   cali_p.z = 0;   // explicitly say "not touched"
-  //   return cali_p;
-  // }
 
   //mapping the raw values to the usable range
   double x_coords = map_double(raw_val.x, MIN_X, MAX_X, WIDTH / 2, -WIDTH / 2);
   double y_coords = map_double(raw_val.y, MIN_Y, MAX_Y, HEIGHT / 2, -HEIGHT / 2);
 
  
-  
-
-  // All good — save and return
   last_x = x_coords;
   last_y = y_coords;
   cali_p.x = x_coords;

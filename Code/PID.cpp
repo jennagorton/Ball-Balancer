@@ -119,19 +119,19 @@ void balance(double target_x, double target_y) {
 }
 
 /***************** LINE *******************/
-int direction = 0;                 // 0 = forward, 1 = backward
-unsigned long lastSwitch = 0;      
+int direction = 0;
+unsigned long lastSwitch = 0;
 
 void line(double rx, double ry, unsigned long interval) {
   unsigned long now = millis();
 
-  // Only switch direction after the interval
+  // switch direction after interval
   if (now - lastSwitch >= interval) {
     direction = !direction;   // flip 0 ↔ 1
     lastSwitch = now;
   }
 
-  // Apply current direction
+  // flip direction
   if (direction == 0) {
     balance(rx, ry);
   } else {
@@ -148,7 +148,7 @@ void triangle(int scale) {
     lastSwitch = now;
   }
 
-  // Apply current direction
+  //flip direction
   if (direction == 0) {
     balance(0, scale * 10);
   } else if (direction == 1) {
@@ -188,7 +188,7 @@ void ellipse(double rx, double ry, int interval) {
   if (now - lastStep >= interval) {
     lastStep = now;
 
-    balance(rx * cos(theta), ry * sin(theta)); //moves one step
+    balance(rx * cos(theta), ry * sin(theta)); //moves
     theta += 0.1;
     if (theta >= 2 * PI) {
       theta = 0; // wrap around
